@@ -42,7 +42,8 @@ h1 {
 
 .numpad,
 .operators,
-.clear {
+.clear,
+.backspace {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -73,7 +74,9 @@ h1 {
   font-weight: 700;
 }
 
-.operator {
+.operator,
+.clear,
+.backspace {
   background-color: rgba(67, 67, 100, 1);
   color: rgb(220, 220, 230);
 }
@@ -86,14 +89,21 @@ h1 {
   width: 100px;
 }
 
-.clear {
-  background-color: rgba(67, 67, 100, 1);
-  color: rgb(220, 220, 230);
-  justify-content: center;
-  align-items: center;
+.clear,
+.backspace {
   font-size: 16px;
   font-weight: 700;
-  width: 96px;
-  height: 28px;
+  height: 32px;
   margin-bottom: 8px;
+}
+
+.clear {
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+}
+
+.backspace {
+  font-size: 18px;
+  width: 48px;
 }

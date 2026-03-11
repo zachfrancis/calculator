@@ -94,6 +94,14 @@ function handleOperator(elem) {
   }
 }
 
+function handleBackspace() {
+  if (display.textContent === "0.") {
+    display.textContent = "";
+  } else if (display.textContent && prevInputType === "number") {
+    display.textContent = display.textContent.slice(0, -1);
+  }
+}
+
 function handleButtonClick(event) {
   switch (event.target.className) {
     case "number":
@@ -104,8 +112,11 @@ function handleButtonClick(event) {
       break;
     case "clear":
       reset(display);
+    case "backspace":
+      handleBackspace();
+      return; // Avoid storing backspace as prevInputType
     default:
-      break;
+      return;
   }
   prevInputType = event.target.className;
 }
