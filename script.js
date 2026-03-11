@@ -18,14 +18,70 @@ const divide = function (x, y) {
   return quotient;
 };
 
-console.log("Add 3 + 5");
-console.log(add(3, 5));
+function operate(operator, leftNumber, rightNumber) {
+  x = Number(leftNumber);
+  y = Number(rightNumber);
+  switch (operator) {
+    case "add":
+      return add(x, y);
+    case "subtract":
+      return subtract(x, y);
+    case "multiply":
+      return multiply(x, y);
+    case "divide":
+      return divide(x, y);
+    default:
+      return;
+  }
+}
 
-console.log("Subtract 8 - 5");
-console.log(subtract(8, 5));
+function handleButtonClick(event) {
+  const display = document.querySelector(".display");
+  switch (event.target.className) {
+    case "number":
+      if (operator === "equals") {
+        display.textContent = "";
+        operator = undefined;
+        leftNumber = undefined;
+      }
+      display.textContent += event.target.id;
+      break;
 
-console.log("Multiply 4 * 5");
-console.log(multiply(4, 5));
+    case "operator":
+      if (!operator) {
+        leftNumber = display.textContent;
+        operator = event.target.id;
+        display.textContent += ` ${event.target.textContent} `;
+      } else {
+        rightNumber = display.textContent.slice(leftNumber.length + 3);
+        const result = operate(operator, leftNumber, rightNumber);
+        display.textContent = result;
+        operator = event.target.id;
+        if (operator !== "equals") {
+          display.textContent += ` ${event.target.textContent} `;
+        } else if (operator === "equals") {
+          operator = undefined;
+        }
+        leftNumber = String(result);
+      }
+      break;
 
-console.log("Divide 15 / 3");
-console.log(divide(15, 3));
+    case "clear":
+      leftNumber = undefined;
+      rightNumber = undefined;
+      display.textContent = "";
+
+    default:
+      break;
+  }
+}
+
+let leftNumber;
+let operator;
+let rightNumber;
+
+const buttons = document.querySelectorAll("button");
+
+for (button of buttons) {
+  button.addEventListener("click", handleButtonClick);
+}

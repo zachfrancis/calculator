@@ -20,6 +20,7 @@ body {
 .display {
   border: 1px solid black;
   margin-bottom: 12px;
+  min-height: 1.25em;
 }
 
 .numpad,
