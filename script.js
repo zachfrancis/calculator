@@ -35,41 +35,35 @@ function operate(operator, leftNumber, rightNumber) {
   }
 }
 
+function reset(display) {
+  display.textContent = "";
+  operator = undefined;
+  leftNumber = undefined;
+  rightNumber = undefined;
+}
+
 function handleButtonClick(event) {
   const display = document.querySelector(".display");
   switch (event.target.className) {
     case "number":
-      if (operator === "equals") {
-        display.textContent = "";
-        operator = undefined;
-        leftNumber = undefined;
-      }
+      if (operator === "equals") reset(display);
       display.textContent += event.target.id;
       break;
 
     case "operator":
-      if (!operator) {
-        leftNumber = display.textContent;
-        operator = event.target.id;
-        display.textContent += ` ${event.target.textContent} `;
-      } else {
+      if (leftNumber && operator !== "equals") {
         rightNumber = display.textContent.slice(leftNumber.length + 3);
-        const result = operate(operator, leftNumber, rightNumber);
-        display.textContent = result;
-        operator = event.target.id;
-        if (operator !== "equals") {
-          display.textContent += ` ${event.target.textContent} `;
-        } else if (operator === "equals") {
-          operator = undefined;
-        }
-        leftNumber = String(result);
+        display.textContent = operate(operator, leftNumber, rightNumber);
+      }
+      leftNumber = display.textContent;
+      operator = event.target.id;
+      if (operator !== "equals") {
+        display.textContent += ` ${event.target.textContent} `;
       }
       break;
 
     case "clear":
-      leftNumber = undefined;
-      rightNumber = undefined;
-      display.textContent = "";
+      reset(display);
 
     default:
       break;
