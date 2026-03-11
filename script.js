@@ -57,6 +57,14 @@ function reset() {
   rightNumber = undefined;
 }
 
+function handleDot() {
+  if (!display.textContent) {
+    display.textContent = "0.";
+  } else if (!display.textContent.includes(".")) {
+    display.textContent += ".";
+  }
+}
+
 function handleNumber(elem) {
   // If last operation was equals, start with a blank slate
   if (operator === "equals") {
@@ -64,7 +72,11 @@ function handleNumber(elem) {
   } else if (prevInputType === "operator") {
     display.textContent = "";
   }
-  if (display.textContent.length < MAX_DIGITS) display.textContent += elem.id;
+  if (elem.id === "dot") {
+    handleDot();
+  } else if (display.textContent.length < MAX_DIGITS) {
+    display.textContent += elem.textContent;
+  }
 }
 
 function handleOperator(elem) {
