@@ -1,4 +1,4 @@
-const MAX_DECIMALS = 6;
+const MAX_DIGITS = 9;
 
 const add = function (x, y) {
   const sum = x + y;
@@ -25,7 +25,7 @@ const divide = function (x, y) {
 };
 
 function roundNumber(n) {
-  return !Number.isInteger(n) ? n.toFixed(MAX_DECIMALS) : n;
+  return !Number.isInteger(n) ? parseFloat(n.toPrecision(MAX_DIGITS)) : n;
 }
 
 function operate(operator, leftNumber, rightNumber) {
@@ -59,19 +59,21 @@ function reset() {
 
 function handleNumber(elem) {
   // If last operation was equals, start with a blank slate
-  if (operator === "equals") reset();
-  display.textContent += elem.id;
+  if (operator === "equals") {
+    reset();
+  } else if (prevInputType === "operator") {
+    display.textContent = "";
+  }
+  if (display.textContent.length < MAX_DIGITS) display.textContent += elem.id;
 }
 
 function handleOperator(elem) {
   const inputtingRightNumber = leftNumber && operator !== "equals";
-  if (inputtingRightNumber) {
-    rightNumber = display.textContent.slice(leftNumber.length + 3);
-    if (rightNumber) {
-      display.textContent = operate(operator, leftNumber, rightNumber);
-    } else {
-      display.textContent = leftNumber;
-    }
+  if (prevInputType === "operator") {
+    display.textContent = leftNumber;
+  } else if (inputtingRightNumber) {
+    rightNumber = display.textContent;
+    display.textContent = operate(operator, leftNumber, rightNumber);
   }
   leftNumber = display.textContent;
   operator = elem.id;
@@ -93,12 +95,14 @@ function handleButtonClick(event) {
     default:
       break;
   }
+  prevInputType = event.target.className;
 }
 
 // Global variables - needed for most functions
 let leftNumber;
 let rightNumber;
 let operator;
+let prevInputType;
 
 const display = document.querySelector(".display");
 const buttons = document.querySelectorAll("button");
