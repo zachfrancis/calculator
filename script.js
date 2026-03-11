@@ -16,6 +16,10 @@ const multiply = function (x, y) {
 };
 
 const divide = function (x, y) {
+  if (y === 0) {
+    alert("Don't you dare!");
+    return x;
+  }
   const quotient = x / y;
   return quotient;
 };
@@ -46,7 +50,7 @@ function operate(operator, leftNumber, rightNumber) {
   return roundNumber(result);
 }
 
-function resetDisplay() {
+function reset() {
   display.textContent = "";
   operator = undefined;
   leftNumber = undefined;
@@ -55,14 +59,19 @@ function resetDisplay() {
 
 function handleNumber(elem) {
   // If last operation was equals, start with a blank slate
-  if (operator === "equals") resetDisplay(display);
+  if (operator === "equals") reset();
   display.textContent += elem.id;
 }
 
 function handleOperator(elem) {
-  if (leftNumber && operator !== "equals") {
+  const inputtingRightNumber = leftNumber && operator !== "equals";
+  if (inputtingRightNumber) {
     rightNumber = display.textContent.slice(leftNumber.length + 3);
-    display.textContent = operate(operator, leftNumber, rightNumber);
+    if (rightNumber) {
+      display.textContent = operate(operator, leftNumber, rightNumber);
+    } else {
+      display.textContent = leftNumber;
+    }
   }
   leftNumber = display.textContent;
   operator = elem.id;
@@ -76,14 +85,11 @@ function handleButtonClick(event) {
     case "number":
       handleNumber(event.target);
       break;
-
     case "operator":
       handleOperator(event.target);
       break;
-
     case "clear":
-      resetDisplay(display);
-
+      reset(display);
     default:
       break;
   }
