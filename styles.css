@@ -78,6 +78,10 @@ h1 {
   color: rgb(220, 220, 230);
 }
 
+#equals {
+  width: 100%;
+}
+
 .clear {
   background-color: rgba(67, 67, 100, 1);
   color: rgb(220, 220, 230);
