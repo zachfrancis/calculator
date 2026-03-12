@@ -31,6 +31,7 @@ function roundNumber(n) {
 function operate(operator, leftNumber, rightNumber) {
   x = Number(leftNumber);
   y = Number(rightNumber);
+  let result;
   switch (operator) {
     case "add":
       result = add(x, y);
@@ -47,7 +48,11 @@ function operate(operator, leftNumber, rightNumber) {
     default:
       return;
   }
-  return roundNumber(result);
+  result = roundNumber(result);
+  if (result >= 10 ** (MAX_DIGITS - 1)) {
+    result = result.toExponential(MAX_DIGITS - 3);
+  }
+  return result;
 }
 
 function reset() {
